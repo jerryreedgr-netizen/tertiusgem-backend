@@ -1,3 +1,4 @@
+console.log("TOKEN:", process.env.ACCESS_TOKEN);
 require("dotenv").config();
 
 const express = require("express");
