@@ -7,22 +7,23 @@ const { MercadoPagoConfig, Preference } = require("mercadopago");
 const app = express();
 
 // ==========================
-// CONFIGURACIÓN
+// CONFIG
 // ==========================
 app.use(cors());
 app.use(express.json());
 
+// 🔥 IMPORTANTE PARA RENDER
 const PORT = process.env.PORT || 3000;
 
 // ==========================
-// MERCADO PAGO (SDK v2)
+// MERCADO PAGO
 // ==========================
 const client = new MercadoPagoConfig({
   accessToken: process.env.ACCESS_TOKEN
 });
 
 // ==========================
-// RUTA TEST
+// TEST
 // ==========================
 app.get("/", (req, res) => {
   res.send("Backend Tertiusgem activo 🚀");
@@ -35,7 +36,7 @@ app.post("/crear-preferencia", async (req, res) => {
   try {
     const { items } = req.body;
 
-    console.log("🛒 ITEMS RECIBIDOS:", items);
+    console.log("🛒 ITEMS:", items);
 
     if (!items || items.length === 0) {
       return res.status(400).json({
@@ -55,26 +56,26 @@ app.post("/crear-preferencia", async (req, res) => {
         })),
 
         back_urls: {
-          success: "http://localhost:5500/success.html",
-          failure: "http://localhost:5500/failure.html",
-          pending: "http://localhost:5500/pending.html"
+          success: "https://tu-frontend.com/success.html",
+          failure: "https://tu-frontend.com/failure.html",
+          pending: "https://tu-frontend.com/pending.html"
         }
 
-        // ❌ NO usamos auto_return para evitar conflictos
+        // ❌ SIN auto_return para evitar errores
       }
     });
 
-    console.log("✅ PREFERENCIA CREADA:", response.id);
+    console.log("✅ PREFERENCIA:", response.id);
 
     res.json({
       id: response.id
     });
 
   } catch (error) {
-    console.error("🔥 ERROR MP:", error);
+    console.error("🔥 ERROR:", error);
 
     res.status(500).json({
-      error: "Error al crear la preferencia"
+      error: "Error en el servidor"
     });
   }
 });
@@ -83,5 +84,5 @@ app.post("/crear-preferencia", async (req, res) => {
 // INICIAR SERVIDOR
 // ==========================
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
 });
